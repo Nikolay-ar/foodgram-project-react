@@ -1,8 +1,23 @@
 version: '3.8'
 
 services:
-  api:
+
+  migrate:
+    image: backend-api:latest
     build: .
+    volumes:
+      - sqlite:/app/db
+    command: python3 manage.py migrate
+
+  api:
+    image: backend-api:latest
     restart: always
     env_file:
       - ./.env
+    volumes:
+      - sqlite:/app/db
+    depends_on:
+      - migrate
+
+volumes:
+  sqlite:
