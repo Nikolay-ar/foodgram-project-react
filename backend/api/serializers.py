@@ -6,7 +6,20 @@ import base64
 from recipes.models import Ingredient, Recipe, Tag, RecipeIngredient
 from django.core.files.base import ContentFile
 from users.models import User, Subscribe
-from djoser.serializers import UserSerializer
+from djoser.serializers import UserSerializer, UserCreateSerializer
+
+
+class CustomUserCreateSerializer(UserCreateSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'email',
+            'id',
+            'username',
+            'first_name',
+            'last_name',
+            'password',
+        )
 
 
 class CustomUserSerializer(UserSerializer):
@@ -145,7 +158,7 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Если нам надо записывать в поле ingredients переопределяем метод
-        create. Сохраняет в т.ч. данные из поля ingredients"""
+        create. Сохраняет в т.ч. данные из поля ingredients и tags"""
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
         recipe = Recipe.objects.create(**validated_data)
