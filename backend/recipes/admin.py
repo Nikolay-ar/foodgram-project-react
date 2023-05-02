@@ -1,13 +1,20 @@
 from django.contrib import admin
-from .models import Recipe, Tag, Ingredient
+from django.contrib.admin import display
+
+from .models import Ingredient, Recipe, Tag
 
 
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('pk', 'text', 'author', 'name',
-                    'cooking_time', 'created_at')
+                    'cooking_time', 'created_at', 'added_in_favorites')
+    readonly_fields = ('added_in_favorites',)
     search_fields = ('text',)
-    list_filter = ('created_at',)
+    list_filter = ('author', 'name', 'tags')
     empty_value_display = '-пусто-'
+
+    @display(description='Количество в избранных')
+    def added_in_favorites(self, obj):
+        return obj.favorites.count()
 
 
 class TagAdmin(admin.ModelAdmin):
@@ -17,6 +24,11 @@ class TagAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
-admin.site.register(Ingredient)
+class IngredientAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'name', 'measurement_unit',)
+    list_filter = ('name',)
+
+
+admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Tag, TagAdmin)

@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
-
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'recipes.apps.RecipesConfig',
     'users.apps.UsersConfig',
     'rest_framework',
+    'django_filters',
     'rest_framework.authtoken',
     'djoser'
 ]

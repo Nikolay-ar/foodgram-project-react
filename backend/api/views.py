@@ -1,25 +1,31 @@
 from datetime import datetime
+
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
+from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
-from api.serializers import RecipeCreateUpdateSerializer, \
-    IngredientSerializer, TagSerializer, RecipeReadSerializer, \
-    RecipeShortSerializer
-from recipes.models import Ingredient, Recipe, Tag, Favourite, ShoppingCart, \
-    RecipeIngredient
-from rest_framework import status
-from api.permissions import IsOwnerOrReadOnly
+
+from recipes.models import (Favourite, Ingredient, Recipe, RecipeIngredient,
+                            ShoppingCart, Tag)
+
+from .filters import RecipeFilter
+from .permissions import IsOwnerOrReadOnly
+from .serializers import (IngredientSerializer, RecipeCreateUpdateSerializer,
+                          RecipeReadSerializer, RecipeShortSerializer,
+                          TagSerializer)
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name',)
 
 
 class TagViewSet(viewsets.ModelViewSet):  # ReadOnly
@@ -31,6 +37,8 @@ class TagViewSet(viewsets.ModelViewSet):  # ReadOnly
 class RecipesViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = RecipeFilter
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -93,7 +101,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
         ).values(
             'ingredient__name',
             'ingredient__measurement_unit'
-        ).annotate(amount=Sum('amount'))
+        ).annotate(amount=Sum('amount')).order_by('-amount')
 
         today = datetime.today()
         shopping_list = (

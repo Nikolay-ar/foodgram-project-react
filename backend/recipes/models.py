@@ -1,6 +1,7 @@
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import UniqueConstraint
+
 from users.models import User
 
 
@@ -21,7 +22,7 @@ class Ingredient(models.Model):
 class Tag(models.Model):
     name = models.TextField(max_length=200, verbose_name='Название тэга',
                             unique=True)
-    color = models.CharField(max_length=16)
+    color = models.CharField(max_length=16, unique=True)
     slug = models.SlugField(unique=True, max_length=200,
                             verbose_name='Уникальный слаг')
 
@@ -36,8 +37,7 @@ class Recipe(models.Model):
                                verbose_name='Автор рецепта',
                                db_index=True)
     text = models.TextField(verbose_name='Описание рецепта')
-    image = models.ImageField(upload_to='recipes/', null=True,
-                              blank=True, verbose_name='Изображение')
+    image = models.ImageField(upload_to='recipes/', verbose_name='Изображение')
     cooking_time = models.PositiveSmallIntegerField(
         verbose_name='Время приготовления (в минутах)',
         validators=[MinValueValidator(1, message='Мин значение 1!')])
