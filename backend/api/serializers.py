@@ -87,7 +87,7 @@ class IngredientCreateInRecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RecipeIngredient
-        fields = ('recipe', 'id', 'amount')
+        fields = ('id', 'amount')
 
 
 class RecipeReadSerializer(serializers.ModelSerializer):
@@ -165,7 +165,6 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         ingredients = validated_data.pop('ingredients', None)
         tags = validated_data.pop('tags', None)
-        image = validated_data.pop('image', None)
         if ingredients is not None:
             instance.ingredients.clear()
 
@@ -183,9 +182,6 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
         if tags is not None:
             instance.tags.clear()
             instance.tags.set(tags)
-        if image is not None:
-            instance.image.clear()
-            instance.image.add(image)
 
         return super().update(instance, validated_data)
 
