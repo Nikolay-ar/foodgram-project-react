@@ -42,7 +42,6 @@ class CustomUserViewSet(UserViewSet):
         subscription.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
     @action(
         detail=False,
         permission_classes=[IsAuthenticated]
