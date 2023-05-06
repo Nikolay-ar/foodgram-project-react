@@ -1,8 +1,7 @@
+from api.serializers import CustomUserSerializer, RecipeShortSerializer
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
-
-from api.serializers import CustomUserSerializer, RecipeShortSerializer
 
 from .models import Subscribe
 

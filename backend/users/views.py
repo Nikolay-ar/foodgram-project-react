@@ -1,3 +1,4 @@
+from api.pagination import CustomPagination
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
@@ -5,8 +6,6 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
-from api.pagination import CustomPagination
 
 from .models import Subscribe
 from .serializers import CustomUserSerializer, SubscribeSerializer
@@ -37,7 +36,7 @@ class CustomUserViewSet(UserViewSet):
             Subscribe.objects.create(user=user, author=author)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        elif request.method == 'DELETE':
+        if request.method == 'DELETE':
             subscription = get_object_or_404(Subscribe,
                                              user=user,
                                              author=author)
