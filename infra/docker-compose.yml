@@ -8,7 +8,6 @@ services:
       - ./.env
 
   web:
-#    build: ../api_yamdb
     image: delonart/foodgram-backend:latest
     restart: always
     volumes:
