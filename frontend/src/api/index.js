@@ -400,4 +400,4 @@ class Api {
   }
 }
 
-export default new Api(process.env.API_URL || 'http://localhost', { 'content-type': 'application/json' })
+export default new Api(process.env.API_URL || 'http://158.160.20.67', { 'content-type': 'application/json' })
