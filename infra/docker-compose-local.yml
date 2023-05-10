@@ -19,20 +19,24 @@ services:
     env_file:
       - ./.env
 
-  nginx:
-    image: nginx:1.21.3-alpine
+  frontend:
+#    build: ../frontend
+    image: delonart/foodgram-frontend:latest
+    volumes:
+      - ../frontend/:/app/result_build/
 
+  nginx:
+    image: nginx:1.19.3
     ports:
       - "80:80"
-
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ../frontend/build:/usr/share/nginx/html/
+      - ../docs/:/usr/share/nginx/html/api/docs/
       - static_value:/var/html/static/
-
       - media_value:/var/html/media/
-
     depends_on:
+      # Контейнер nginx должен быть запущен после контейнера web
       - web
 
 volumes:
