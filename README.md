@@ -1,12 +1,12 @@
 ## Проект Foodgram
 
-![workflow](https://github.com/mikhailsoldatkin/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)
+![workflow](http://github.com/Nikolay-ar/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)
 
 Foodgram - продуктовый помощник с базой кулинарных рецептов. Позволяет публиковать рецепты, сохранять избранные, а также формировать список покупок для выбранных рецептов. Можно подписываться на любимых авторов.
 
-Проект доступен по адресу [delonart.ddns.net](https://delonart.ddns.net)
+Проект доступен по адресу [delonart.ddns.net/](http://delonart.ddns.net/)
 
-Документация к API доступна [здесь](https://foodgramproject.ru/api/docs/)
+Документация к API доступна по адресу [delonart.ddns.net/api/docs/](http://delonart.ddns.net/api/docs/)
 
 В документации описаны возможные запросы к API и структура ожидаемых ответов. Для каждого запроса указаны уровни прав доступа.
 
@@ -18,7 +18,7 @@ Python, Django, Django Rest Framework, Docker, Gunicorn, NGINX, PostgreSQL, Yand
 
 - Клонировать репозиторий:
 ```
-https://github.com/mikhailsoldatkin/foodgram-project-react.git
+https://github.com/Nikolay-ar/foodgram-project-react.git
 ```
 
 - Установить на сервере Docker, Docker Compose:
@@ -30,10 +30,10 @@ sh get-docker.sh                                        # запуск скри�
 sudo apt-get install docker-compose-plugin              # последняя версия docker compose
 ```
 
-- Скопировать на сервер файлы docker-compose.yml, nginx.conf из папки infra (команды выполнять находясь в папке infra):
+- Скопировать на сервер папку infra (команды выполнять находясь в папке infra):
 
 ```
-scp docker-compose.yml nginx.conf username@IP:/home/username/   # username - имя пользователя на сервере
+scp -r infra username@IP:infra   # username - имя пользователя на сервере
                                                                 # IP - публичный IP сервера
 ```
 
@@ -63,24 +63,19 @@ DB_PORT                 # 5432 (порт по умолчанию)
 sudo docker compose up -d
 ```
 
-- После успешной сборки выполнить миграции:
+- После успешной сборки выполнить миграции из папки infra, при этом наполнится база данных содержимым из файла ingredients.csv:
 ```
-sudo docker compose exec backend python manage.py migrate
+sudo docker-compose exec web python manage.py migrate
 ```
 
 - Создать суперпользователя:
 ```
-sudo docker compose exec backend python manage.py createsuperuser
+sudo docker compose exec web python manage.py createsuperuser
 ```
 
 - Собрать статику:
 ```
-sudo docker compose exec backend python manage.py collectstatic --noinput
-```
-
-- Наполнить базу данных содержимым из файла ingredients.json:
-```
-sudo docker compose exec backend python manage.py loaddata ingredients.json
+sudo docker compose exec web python manage.py collectstatic --noinput
 ```
 
 - Для остановки контейнеров Docker:
@@ -100,7 +95,7 @@ sudo docker compose stop         # без удаления
 
 - Клонировать репозиторий:
 ```
-https://github.com/mikhailsoldatkin/foodgram-project-react.git
+https://github.com/Nikolay-ar/foodgram-project-react.git
 ```
 
 - В директории infra файл example.env переименовать в .env и заполнить своими данными:
@@ -129,4 +124,4 @@ docker-compose -f docker-compose-local.yml up -d
 
 ### Автор backend'а:
 
-Михаил Солдаткин (c) 2022
+Николай Артемьев (c) 2023
