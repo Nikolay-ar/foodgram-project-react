@@ -125,4 +125,5 @@ docker-compose -f docker-compose-local.yml up -d
 ### Автор backend'а:
 
 Николай Артемьев (c) 2023
+
 email: as@as.com password: admin name: admin фамилия: admin 
