@@ -12,7 +12,7 @@ from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
 
-from .filters import RecipeFilter
+from .filters import IngredientFilter, RecipeFilter
 from .permissions import IsOwnerOrReadOnly, ReadOnly
 from .serializers import (IngredientSerializer, RecipeCreateUpdateSerializer,
                           RecipeReadSerializer, RecipeShortSerializer,
@@ -25,7 +25,7 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = None
     permission_classes = (ReadOnly,)
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('name',)
+    filterset_class = IngredientFilter
 
 
 class TagViewSet(viewsets.ModelViewSet):  # ReadOnly
