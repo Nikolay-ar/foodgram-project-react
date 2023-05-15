@@ -95,7 +95,7 @@ jobs:
         script: |
           # Выполняет pull образа с DockerHub
           cd infra
-          sudo docker-compose down
+          sudo docker-compose stop
           sudo docker rmi delonart/foodgram-backend:latest
           sudo docker rmi delonart/foodgram-frontend:latest
           sudo docker pull delonart/foodgram-backend:latest
